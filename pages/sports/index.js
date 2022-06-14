@@ -1,10 +1,10 @@
 import Layout from "../../components/layout"
 
-export default function Concerts({events}) {
+export default function Sports({events}) {
   return (
     <>
       <Layout>
-        <div>Concerts</div>
+        <div>Sports</div>
       </Layout>
     </>
   )
