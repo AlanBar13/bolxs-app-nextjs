@@ -1,7 +1,8 @@
 import Layout from "../components/layout"
+import {api} from '../utils/api'
 
 export async function getStaticProps(){
-  const res = await fetch('http://localhost:5000/api/v1/events')
+  const res = await fetch(`${api}/events`)
   const { data } = await res.json()
   return {
     props: {
@@ -12,7 +13,6 @@ export async function getStaticProps(){
 }
 
 export default function Home({events}) {
-  console.log(events)
   return (
     <>
       <Layout>
