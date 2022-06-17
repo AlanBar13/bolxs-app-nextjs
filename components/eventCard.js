@@ -6,49 +6,29 @@ import {
     Badge,
     useColorModeValue,
     Icon,
-    chakra,
     Tooltip,
+    Stack,
+    Skeleton
 } from '@chakra-ui/react';
-import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { FiShoppingCart } from 'react-icons/fi';
 
-function Rating({ rating, numReviews }) {
-    return (
-        <Box d="flex" alignItems="center">
-            {Array(5).map((_, i) => {
-                const roudedRating = Math.floor(rating * 2) /2;
-                if (roudedRating - i >= 1) {
-                    return (
-                        <BsStarFill 
-                            key={i}
-                            style={{ marginLeft: '1' }}
-                            color={i < rating ? 'teal.500' : 'gray.300'}
-                        />
-                    )
-                }
-                if (roundedRating - i === 0.5) {
-                    return <BsStarHalf key={i} style={{ marginLeft: '1' }} />;
-                  }
-                  return <BsStar key={i} style={{ marginLeft: '1' }} />;
-            })}
-            <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                {numReviews} opinion{numReviews > 1 && 'es'}
-            </Box>
-        </Box>
-    )
-}
-
 export default function EventCard({ event }) {
-    return (
-        <Flex p={50} w="full" alignItems="center" justifyContent="center">
+
+    const renderEvent = () => {
+        if (event) {
+            return (
             <Box 
                 bg={useColorModeValue('white', 'gray.800')}
+                marginBottom={5}
                 maxW="sm"
                 borderWidth="1px"
                 rounded="lg"
                 shadow="lg"
+                as="a"
+                href={event.long_url}
+                cursor="pointer"
                 position="relative">
-                {event.isNew && (
+                {event.is_new && (
                     <Circle
                         size="10px"
                         position="absolute"
@@ -76,7 +56,7 @@ export default function EventCard({ event }) {
                             fontWeight="semibold"
                             as="h4"
                             lineHeight="tight"
-                            isTruncated>
+                            >
                             {event.name}
                         </Box>
                         <Tooltip
@@ -85,18 +65,18 @@ export default function EventCard({ event }) {
                             placement={'top'}
                             color={'gray.800'}
                             fontSize={'1.2em'}>
-                            <chakra.a href={'#'} display={'flex'}>
-                                <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
-                            </chakra.a>
+                                <span>
+                                    <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
+                                </span>
                         </Tooltip>
                     </Flex>
 
                     <Flex justifyContent="space-between" alignContent="center">
-                        <Rating rating={event.rating} numReviews={event.numReviews} />
-                        {event.ticket_types.length > 0 ? event.ticket_types.map((ticket, i) => (
-                            <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
+                        <Hype hype={event.hype} />
+                        {event.ticket_types.length > 0 ? event.ticket_types.map((ticket) => (
+                            <Box key={ticket.ID} fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
                                 <Box as="span" color={'gray.600'} fontSize="lg">
-                                    $
+                                   {ticket.name} $
                                 </Box>
                                 {ticket.price.toFixed(2)}
                             </Box>
@@ -107,6 +87,27 @@ export default function EventCard({ event }) {
                     </Flex>
                 </Box>
             </Box>
-        </Flex>
+)
+        }else{
+            return (
+                <Stack>
+                    <Skeleton height='20px' />
+                    <Skeleton height='20px' />
+                    <Skeleton height='20px' />
+                </Stack>
+            )
+        }
+    }
+
+    return renderEvent()
+}
+
+function Hype({ hype }) {
+    return (
+        <Box d="flex" alignItems="center">
+            <Badge variant='solid' colorScheme='green'>
+                +{hype} hype
+            </Badge>
+        </Box>
     )
 }
