@@ -21,8 +21,6 @@ import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 
 const Links = [{name: 'Conciertos', route: '/concerts'}, {name: 'Eventos', route: '/events'}, {name: 'Deportes', route: '/sports'}];
 
-export const titlePage = "Bolxs!!";
-
 const NavLink = ({ children, route }) => (
     <Link
       px={2}
@@ -42,16 +40,6 @@ export default function Layout({ children }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
-            <Head>
-                <link rel="icon" href="/favicon.ico" />
-                <meta name="og:title" content={titlePage} />
-                <meta
-                name="description"
-                content="Compra y crea boletos para todo tipo de eventos"
-                />
-                <meta name="twitter:card" content="summary_large_image" />
-                <title>{titlePage}</title>
-            </Head>
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                 <IconButton
@@ -62,13 +50,13 @@ export default function Layout({ children }) {
                     onClick={isOpen ? onClose : onOpen}
                 />
                 <HStack spacing={8} alignItems={'center'}>
-                    <Box>{titlePage}</Box>
+                    <NavLink route='/'>Bolxs!!</NavLink>
                     <HStack
                     as={'nav'}
                     spacing={4}
                     display={{ base: 'none', md: 'flex' }}>
-                        {Links.map((link) => (
-                            <NavLink key={link} route={link.route}>{link.name}</NavLink>
+                        {Links.map((link, i) => (
+                            <NavLink key={i} route={link.route}>{link.name}</NavLink>
                         ))}
                     </HStack>
                 </HStack>
@@ -108,9 +96,10 @@ export default function Layout({ children }) {
                 {isOpen ? (
                 <Box pb={4} display={{ md: 'none' }}>
                     <Stack as={'nav'} spacing={4}>
-                    {Links.map((link) => (
-                        <NavLink key={link}>{link}</NavLink>
-                    ))}
+                        <NavLink route="/">Home</NavLink>
+                        {Links.map((link, i) => (
+                            <NavLink key={i} route={link.route}>{link.name}</NavLink>
+                        ))}
                     </Stack>
                 </Box>
                 ) : null}
