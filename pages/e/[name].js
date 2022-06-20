@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Layout from "../../components/layout"
 import SEO from "../../components/seo"
-import {api} from '../../utils/api'
+import {api} from '../../lib/api'
 import ProductDetails from '../../components/productDetails'
 
 export async function getStaticProps({ params }){

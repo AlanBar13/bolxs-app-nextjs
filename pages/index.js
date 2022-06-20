@@ -1,6 +1,6 @@
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import {api} from '../utils/api'
+import {api} from '../lib/api'
 import dynamic from "next/dynamic"
 
 const EventsTable = dynamic(() => import('../components/eventsTable'), { ssr: false })
