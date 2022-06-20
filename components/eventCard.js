@@ -10,7 +10,37 @@ import {
     Stack,
     Skeleton
 } from '@chakra-ui/react';
-import { FiShoppingCart } from 'react-icons/fi';
+import { TbTicketOff, TbTicket } from 'react-icons/tb';
+
+const Tickets = ({ ticket }) => {
+    return (
+        <Box color={useColorModeValue('gray.800', 'white')}>
+            {ticket.available && ticket.available > 0 ? (
+                <Tooltip hasArrow label={`${ticket.available} disponibles`}>
+                    <div>
+                        <span>
+                            <Icon as={TbTicket} w={4} h={4} />
+                        </span>
+                        <Box as="span" color={'gray.600'} fontSize="lg">
+                            {" "}{ticket.name}
+                        </Box>
+                    </div>
+                </Tooltip>
+            ) : (
+                <Tooltip hasArrow label={`No hay mas boletos`}>
+                    <div>
+                        <span>
+                            <Icon as={TbTicketOff} w={4} h={4} />
+                        </span>
+                        <Box as="span" color={'gray.600'} fontSize="lg">
+                            {" "}{ticket.name}
+                        </Box>
+                    </div>
+                </Tooltip>
+            )}
+        </Box>
+    )
+}
 
 export default function EventCard({ event }) {
 
@@ -25,7 +55,7 @@ export default function EventCard({ event }) {
                 rounded="lg"
                 shadow="lg"
                 as="a"
-                href={event.long_url}
+                href={`/e/${event.long_url}`}
                 cursor="pointer"
                 position="relative">
                 {event.is_new && (
@@ -59,27 +89,12 @@ export default function EventCard({ event }) {
                             >
                             {event.name}
                         </Box>
-                        <Tooltip
-                            label="Add to cart"
-                            bg="white"
-                            placement={'top'}
-                            color={'gray.800'}
-                            fontSize={'1.2em'}>
-                                <span>
-                                    <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
-                                </span>
-                        </Tooltip>
                     </Flex>
 
                     <Flex justifyContent="space-between" alignContent="center">
                         <Hype hype={event.hype} />
                         {event.ticket_types.length > 0 ? event.ticket_types.map((ticket) => (
-                            <Box key={ticket.ID} fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
-                                <Box as="span" color={'gray.600'} fontSize="lg">
-                                   {ticket.name} $
-                                </Box>
-                                {ticket.price.toFixed(2)}
-                            </Box>
+                            <Tickets key={ticket.ID} ticket={ticket} />
                         )): (
                             <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
                                 Evento gratuito
