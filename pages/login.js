@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthUserContext';
 import {
@@ -20,14 +20,19 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showAlert, setShowAlert] = useState({status: false, type: '', title: ''});
-    const {signInWithEmail} = useAuth();
+    const {signInWithEmail, authUser} = useAuth();
     const router = useRouter();
+   
+    useEffect(() => {
+        if(authUser) {
+            router.back();
+        }
+    }, [authUser, router]);
 
     const login = async () => {
         try {
             setShowAlert({status: false, type: '', title: ''});
             await signInWithEmail(email, password);
-            router.push('/');
         } catch (error) {
             const errorCode = error.code;
             switch(errorCode) {
