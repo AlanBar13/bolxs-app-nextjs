@@ -12,6 +12,8 @@ import {
     Link,
     Stack,
     Image,
+    Text,
+    Spinner,
 } from '@chakra-ui/react';
 import Alerts from '../components/alert';
 import Head from 'next/head';
@@ -20,7 +22,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showAlert, setShowAlert] = useState({status: false, type: '', title: ''});
-    const {signInWithEmail, authUser} = useAuth();
+    const {signInWithEmail, authUser, isLoading} = useAuth();
     const router = useRouter();
    
     useEffect(() => {
@@ -77,8 +79,9 @@ export default function Login() {
                                 <Link color={'blue.500'}>Olvidaste tu contraseña?</Link>
                             </Stack>
                             <Button colorScheme={'blue'} variant={'solid'} onClick={() => login()}>
-                                Login
+                                {isLoading ? <Spinner size={'sm'} /> : 'Iniciar sesión'}
                             </Button>
+                            <Text align={'center'}>Crear una <Link color={'blue.500'} href='/signup'>cuenta</Link></Text>
                             {showAlert.status && (
                                 <Alerts type={showAlert.type} title={showAlert.title} />
                             )}
