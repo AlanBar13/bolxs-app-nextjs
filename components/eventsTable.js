@@ -1,20 +1,20 @@
 import { Flex, Spacer } from '@chakra-ui/react'
 import EventCard from './eventCard'
 
-const CardContainer = ({ event, count, length }) => {
+const CardContainer = ({ event }) => {
     return (
         <>
             <EventCard event={event} />
-            {length !== count ? <Spacer /> : <></>}
+            <Spacer />
         </>
     )
 }
 
 export default function EventsTable({ events }) {
     return (
-        <Flex p={5} flexDir={['column', 'row']} align="center" wrap="wrap">
+        <Flex flexDir={['column', 'row']} align="center" wrap="wrap">
             {events.map((event, i) => (
-                <CardContainer key={i} event={event} count={i} length={events.length - 1} />
+                <CardContainer key={i} event={event} />
             ))}
         </Flex>
     )
