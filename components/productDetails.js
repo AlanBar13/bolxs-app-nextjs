@@ -15,8 +15,13 @@ import {
     ListItem,
   } from '@chakra-ui/react';
   import { MdLocalShipping } from 'react-icons/md';
+  import { format } from 'date-fns';
   
   export default function ProductDetails({ event }) {
+    const formatDate = (date) => {
+      const d = new Date(date);
+      return format(d, 'dd/MM/yyyy h:mm a');
+    };
     return (
       <Container maxW={'7xl'}>
         <SimpleGrid
@@ -81,7 +86,7 @@ import {
                     <Text as={'span'} fontWeight={'bold'}>
                       Fecha:
                     </Text>{' '}
-                    {event.start_date}
+                    {formatDate(event.start_date)}
                   </ListItem>
                   <ListItem>
                     <Text as={'span'} fontWeight={'bold'}>
@@ -138,7 +143,8 @@ import {
               </Box>
             </Stack>
   
-            <Button
+            {event.ticket_types.length > 0 && (
+              <Button
               rounded={'none'}
               w={'full'}
               mt={8}
@@ -153,11 +159,7 @@ import {
               }}>
               Add to cart
             </Button>
-  
-            <Stack direction="row" alignItems="center" justifyContent={'center'}>
-              <MdLocalShipping />
-              <Text>2-3 business days delivery</Text>
-            </Stack>
+            )}
           </Stack>
         </SimpleGrid>
       </Container>
