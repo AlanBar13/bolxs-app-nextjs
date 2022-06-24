@@ -1,5 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { AuthUserProvider } from '../context/AuthUserContext'
+import "../styles/date-picker.css";
 
 const colors = {
   brand: {
