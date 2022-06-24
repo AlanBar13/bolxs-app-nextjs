@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useAuth } from "../context/AuthUserContext";
 import Layout from "../components/layout"
 import Head from "next/head";
-import { Container } from '@chakra-ui/react'
 import EventForm from "../components/createEventForm";
 
 
@@ -12,17 +11,17 @@ export default function CreateEvent(){
     const { authUser, isLoading } = useAuth();
 
     useEffect(() => {
-        if(!authUser) {
+        if(!authUser && !isLoading) {
             router.push('/login');
         }
-    }, [authUser]);
+    }, [authUser, isLoading]);
     return(
         <>
             <Head>
                 <title>Crear Evento</title>
             </Head>
             <Layout>
-                <EventForm />
+                <EventForm/>
             </Layout>
         </>
     )
