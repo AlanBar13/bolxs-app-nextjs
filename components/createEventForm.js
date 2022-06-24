@@ -15,12 +15,15 @@ import {
     Flex,
     Heading,
     Button,
+    Spinner
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup';
 import Dropzone from './fileDropzone';
 import CustomCalendar from './calendar';
+import { api } from '../lib/api';
+import { useAuth } from "../context/AuthUserContext";
 
 export default function EventForm(){
     const [files, setFiles] = useState(null);
@@ -28,7 +31,11 @@ export default function EventForm(){
     const [endDate, setEndDate] = useState(new Date());
     const [sellDate, setSellDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
     const [maxTickets, setMaxTickets] = useState(10);
+    const [banner, setBanner] = useState('');
+    const {authUser} = useAuth();
+
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -37,8 +44,24 @@ export default function EventForm(){
             location_address: '',
             private: false,
         }, 
-        onSubmit: values => {
-            console.log(JSON.stringify({...values, startDate, endDate, sellDate, maxTickets}, null, 2));
+        onSubmit: async (values) => {
+            try {
+                setPageLoading(true);
+                const res = await fetch(`${api}/events`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authUser.token}`
+                    },
+                    body: JSON.stringify({...values, start_date: startDate, end_date: endDate, start_sell: sellDate, maximun_tickets: Number(maxTickets), banner})
+                })
+                const data = await res.json();
+                console.log(data);
+                setPageLoading(false);
+            } catch (error) {
+                setPageLoading(false);
+                console.log(error);
+            }
         },
         validationSchema: yup.object({
             name: yup.string().trim().required('El nombre es requerido'),
@@ -48,6 +71,21 @@ export default function EventForm(){
             private: yup.boolean().required('El evento es privado o no'),
         })
     });
+
+    const handleFiles = async (file) => {
+        setLoading(true);
+        setFiles(null)
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(`${api}/upload`, {
+            method: 'POST',
+            body: formData,
+        })
+        const data = await res.json();
+        setBanner(data.url);
+        setFiles(file);
+        setLoading(false);
+    }
     return (
         <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
             <Flex h={'100%'} p={8} flex={1} align={'center'} justify={'center'}>
@@ -89,7 +127,7 @@ export default function EventForm(){
                         <Checkbox id="private" value={formik.values.private} onChange={formik.handleChange} onBlur={formik.handleBlur}></Checkbox>
                         <Button
                             colorScheme='teal'
-                            isLoading={loading}
+                            isLoading={pageLoading}
                             width={'full'}
                             type='submit'
                         >
@@ -99,12 +137,11 @@ export default function EventForm(){
                     </form>
                 </Stack>
             </Flex>
-            <Flex p={8} flex={1} align='flex-start'>
+            <Flex p={8} flex={1} align='center' justify='center'>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Heading>Cartel del evento</Heading>
-                    <Dropzone id="banner" onFileAccepted={(file) => {
-                        setFiles(file)
-                        }} />
+                    <Dropzone id="banner" onFileAccepted={(file) => handleFiles(file)} />
+                    {loading && <Spinner size={'xl'} />}
                     {files && <img src={files.preview} alt="preview" />}
                     <Text>{files ? files.name : 'No hay archivo seleccionado'}</Text>
                 </Stack>
