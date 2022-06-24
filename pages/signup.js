@@ -34,8 +34,7 @@ export default function Signup() {
     const router = useRouter()
 
     const createAccount = async () => {
-        setShowAlert({status: false, type: '', title: ''})
-        console.log(name, lastname, email, password, cpassword)
+        setShowAlert({status: false, type: '', title: ''});
         if (name === "" || lastname === "" || email === "" || password === "" || cpassword === ""){
             setShowAlert({status: true, type: 'warning', title: 'Los campos no pueden estar vacios'})
             return
@@ -47,7 +46,20 @@ export default function Signup() {
         }
 
         try {
-            await createUserWithEmail(email, password, name, lastname)
+            const fb = await createUserWithEmail(email, password)
+            await fetch(`${api}/user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: fb.user.email,
+                    name, 
+                    lastname, 
+                    uid: fb.user.uid 
+                })
+            })
+            
         } catch (error) {
             console.log(error)
         }
@@ -57,7 +69,7 @@ export default function Signup() {
         if(authUser) {
             router.replace('/')
         }
-    },[authUser, router]);
+    },[authUser]);
   
     return (
       <>
