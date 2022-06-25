@@ -15,8 +15,16 @@ import {
     Flex,
     Heading,
     Button,
-    Spinner
+    Spinner,
+    HStack,
+    Tag,
+    TagLeftIcon,
+    TagLabel,
+    InputGroup,
+    InputRightElement,
+    Image
 } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup';
@@ -24,6 +32,7 @@ import Dropzone from './fileDropzone';
 import CustomCalendar from './calendar';
 import { api } from '../lib/api';
 import { useAuth } from "../context/AuthUserContext";
+import { parsePrice, formatPrice } from '../lib/utils';
 
 export default function EventForm(){
     const [files, setFiles] = useState(null);
@@ -32,8 +41,12 @@ export default function EventForm(){
     const [sellDate, setSellDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
-    const [maxTickets, setMaxTickets] = useState(10);
     const [banner, setBanner] = useState('');
+    const [ticketName, setTicketName] = useState('');
+    const [ticketPrice, setTicketPrice] = useState(0.0);
+    const [ticketAmount, setTicketAmount] = useState(10);
+    const [tags, setTags] = useState([]);
+    const [tagText, setTagText] = useState('');
     const {authUser} = useAuth();
 
     const formik = useFormik({
@@ -47,13 +60,30 @@ export default function EventForm(){
         onSubmit: async (values) => {
             try {
                 setPageLoading(true);
+                const ticket_types = []
+                const maximun_tickets = Number(ticketAmount)
+                ticket_types.push({
+                    name: ticketName,
+                    price: Number(parse(ticketPrice)),
+                    amount: Number(ticketAmount),
+                    available: Number(ticketAmount)
+                })
                 const res = await fetch(`${api}/events`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${authUser.token}`
                     },
-                    body: JSON.stringify({...values, start_date: startDate, end_date: endDate, start_sell: sellDate, maximun_tickets: Number(maxTickets), banner})
+                    body: JSON.stringify({
+                        ...values, 
+                        start_date: startDate, 
+                        end_date: endDate, 
+                        start_sell: sellDate, 
+                        maximun_tickets, 
+                        banner, 
+                        ticket_types, 
+                        tags
+                    })
                 })
                 const data = await res.json();
                 console.log(data);
@@ -108,14 +138,6 @@ export default function EventForm(){
                         <CustomCalendar id="end-date" selectedDate={endDate} onChange={(d) => setEndDate(d)} />
                         <FormLabel htmlFor="start-sell">Inicio venta de boletos</FormLabel>
                         <CustomCalendar id="start-sell" selectedDate={sellDate} onChange={(d) => setSellDate(d)} />
-                        <FormLabel htmlFor="maximun_tickets">Numero maximo de Boletos</FormLabel>
-                        <NumberInput id="maximun_tickets" name='maximun_tickets' value={maxTickets} onChange={(e) => setMaxTickets(e)} onBlur={formik.handleBlur} defaultValue={10} min={10} >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
                         <FormHelperText>Minimo 10 boletos</FormHelperText>
                         <FormLabel htmlFor="location_name">Nombre del lugar del evento</FormLabel>
                         <Input id="location_name" name="location_name" type="text" placeholder="Nombre del lugar del evento" value={formik.values.location_name} onChange={formik.handleChange} onBlur={formik.handleBlur} />
@@ -137,15 +159,71 @@ export default function EventForm(){
                     </form>
                 </Stack>
             </Flex>
-            <Flex p={8} flex={1} align='center' justify='center'>
+            <Flex p={8} h={'100%'} flex={1} align='center' justify='center'>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
-                    <Heading>Cartel del evento</Heading>
+                    <Heading>Tipo de Boleto</Heading>
+                    <FormControl>
+                        <FormLabel htmlFor="type">Nombre del Boleto</FormLabel>
+                        <Input id="type" value={ticketName} onChange={(e) => setTicketName(e.target.value)} />
+                        <FormLabel htmlFor="type">Precio del Boleto</FormLabel>
+                        <NumberInput value={formatPrice(ticketPrice)} onChange={(e) => setTicketPrice(parsePrice(e))} >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <FormLabel htmlFor="type">Cantidad de Boletos</FormLabel>
+                        <NumberInput value={ticketAmount} onChange={(e) => setTicketAmount(e)} defaultValue={10} min={10} >
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <FormLabel htmlFor="tags">Tags</FormLabel>
+                        <InputGroup>
+                            <Input id="tags" value={tagText} onChange={(e) => setTagText(e.target.value)} />
+                            <InputRightElement>
+                                <Button onClick={() => {
+                                    setTagText('')
+                                    setTags([...tags, tagText])
+                                }}>
+                                    +
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                        <HStack mt={2} spacing={4}>
+                            {tags.map((tag, index) => (
+                                <Tag key={index} size="sm" variant='subtle' colorScheme='teal'>
+                                    <TagLeftIcon boxSize='12px' as={AddIcon} />
+                                    <TagLabel>{tag}</TagLabel>
+                                </Tag>
+                            ))}
+                        </HStack>
+                    </FormControl>
+                    <Heading>Agrega cartel del evento</Heading>
                     <Dropzone id="banner" onFileAccepted={(file) => handleFiles(file)} />
-                    {loading && <Spinner size={'xl'} />}
-                    {files && <img src={files.preview} alt="preview" />}
-                    <Text>{files ? files.name : 'No hay archivo seleccionado'}</Text>
+                    <Button
+                        colorScheme='teal'
+                        isLoading={pageLoading}
+                        width={'full'}
+                        onClick={formik.handleSubmit}
+                    >
+                        Crear
+                    </Button>
                 </Stack>
             </Flex>
+            {files && (
+                <Flex p={8} h={'100%'} flex={1} align='center' justify='center'>
+                    <Stack spacing={4} w={'full'} maxW={'md'}>
+                        <Heading>Cartel del evento</Heading>
+                        {loading && <Spinner size={'xl'} />}
+                        <Image border="1px" borderColor={'teal'} src={files.preview} alt="cartel" />
+                        <Text>{files ? files.name : 'No hay archivo seleccionado'}</Text>
+                    </Stack>
+                </Flex>
+            )}
         </Stack>
     )
 }
