@@ -13,15 +13,10 @@ import {
     useColorModeValue,
     List,
     ListItem,
-  } from '@chakra-ui/react';
-  import { MdLocalShipping } from 'react-icons/md';
-  import { format } from 'date-fns';
+} from '@chakra-ui/react';
+import { formatDate, formatPriceFixed } from '../lib/utils';
   
   export default function ProductDetails({ event }) {
-    const formatDate = (date) => {
-      const d = new Date(date);
-      return format(d, 'dd/MM/yyyy h:mm a');
-    };
     return (
       <Container maxW={'7xl'}>
         <SimpleGrid
@@ -126,7 +121,7 @@ import {
                                     <Text as={'span'} fontWeight={'bold'}>
                                         Precio: 
                                     </Text>{' '}
-                                    {type.price}
+                                    {formatPriceFixed(type.price)}
                                 </ListItem>
                                 <ListItem>
                                     <Text as={'span'} fontWeight={'bold'}>
