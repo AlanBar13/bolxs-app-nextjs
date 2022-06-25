@@ -11,7 +11,7 @@ export default function CreateEvent(){
     const { authUser, isLoading } = useAuth();
 
     useEffect(() => {
-        if(!authUser && !isLoading) {
+        if(!authUser) {
             router.push('/login');
         }
     }, [authUser, isLoading]);
