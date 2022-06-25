@@ -13,7 +13,8 @@ export default function Dropzone({ onFileAccepted }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop, accept: {
         'image/png': ['.png'], 
-        'image/jpeg': ['.jpg', '.jpeg'] 
+        'image/jpeg': ['.jpg', '.jpeg'],
+        'image/webp': ['.webp'] 
       }, maxFiles: 1, multiple: false,
   });
 
