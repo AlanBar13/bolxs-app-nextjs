@@ -1,6 +1,6 @@
 import NLink from "next/link";
 import { useRouter } from 'next/router';
-import { useAuth } from "../context/AuthUserContext";
+import { useAuth } from "../../context/AuthUserContext";
 import {
     Box,
     Flex,

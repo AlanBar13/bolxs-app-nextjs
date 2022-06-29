@@ -54,6 +54,7 @@ export default function EventCard({ event }) {
                 borderWidth="1px"
                 rounded="lg"
                 shadow="lg"
+                w="100%"
                 as="a"
                 href={`/e/${event.long_url}`}
                 cursor="pointer"
@@ -69,6 +70,8 @@ export default function EventCard({ event }) {
                 )}
                 <Image 
                     src={event.banner}
+                    h="400px"
+                    w="100%"
                     alt={`banner ${event.name}`}
                     roundedTop="lg"
                 />

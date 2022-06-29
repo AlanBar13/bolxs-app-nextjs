@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useRouter } from 'next/router';
 import { useAuth } from "../context/AuthUserContext";
-import Layout from "../components/layout"
+import Layout from "../components/Layouts/layout"
 import Head from "next/head";
 import EventForm from "../components/createEventForm";
 

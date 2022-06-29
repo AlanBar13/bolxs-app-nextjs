@@ -64,7 +64,7 @@ export default function EventForm(){
                 const maximun_tickets = Number(ticketAmount)
                 ticket_types.push({
                     name: ticketName,
-                    price: Number(parse(ticketPrice)),
+                    price: Number(parsePrice(ticketPrice)),
                     amount: Number(ticketAmount),
                     available: Number(ticketAmount)
                 })
