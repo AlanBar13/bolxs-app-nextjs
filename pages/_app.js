@@ -1,6 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { AuthUserProvider } from '../context/AuthUserContext'
 import "../styles/date-picker.css";
+import Head from 'next/head';
 
 const colors = {
   brand: {
@@ -24,6 +25,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <AuthUserProvider>
+        <Head>
+          <link rel="shortcut icon" href="/bolxs_icon.ico" />
+        </Head>
         <Component {...pageProps} />
       </AuthUserProvider>
     </ChakraProvider>
