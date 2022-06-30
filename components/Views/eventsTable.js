@@ -1,5 +1,5 @@
 import { Flex, Spacer } from '@chakra-ui/react'
-import EventCard from './eventCard'
+import EventCard from '../eventCard'
 
 const CardContainer = ({ event }) => {
     return (
@@ -12,7 +12,7 @@ const CardContainer = ({ event }) => {
 
 export default function EventsTable({ events }) {
     return (
-        <Flex flexDir={['column', 'row']} align="center" wrap="wrap">
+        <Flex m={5} flexDir={['column', 'row']} align="center" wrap="wrap">
             {events.map((event, i) => (
                 <CardContainer key={i} event={event} />
             ))}
