@@ -24,7 +24,6 @@ export default function Home({events}) {
     <> 
       <SEO title={titlePage} description={descriptionPage} />
       <Layout>
-        <div>Home</div>
         <EventsTable events={events} />
       </Layout>
     </>

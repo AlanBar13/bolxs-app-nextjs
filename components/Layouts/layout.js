@@ -89,7 +89,7 @@ export default function Layout({ children }) {
                                 />
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>Link 1</MenuItem>
+                                <MenuItem onClick={() => router.push('/user')}>Perfil</MenuItem>
                                 <MenuItem>Link 2</MenuItem>
                                 <MenuDivider />
                                 <MenuItem onClick={signOut}>Salir</MenuItem>
@@ -115,7 +115,7 @@ export default function Layout({ children }) {
                 ) : null}
             </Box>
 
-            <Box p={4}>{children}</Box>
+            <Box>{children}</Box>
         </>
     )
 }
