@@ -2,7 +2,7 @@ import Head from "next/head"
 import Layout from "../../components/Layouts/layout"
 import SEO from "../../components/seo"
 import {api} from '../../lib/api'
-import ProductDetails from '../../components/productDetails'
+import ProductDetails from '../../components/Views/Events/productDetails'
 
 export async function getStaticProps({ params }){
     const id = params.name.split('$$')[1]

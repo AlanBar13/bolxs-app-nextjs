@@ -1,5 +1,5 @@
 import { Text, Image, Box, Stack, Heading } from "@chakra-ui/react";
-import { formatDate, formatPriceFixed } from "../lib/utils";
+import { formatDate, formatPriceFixed } from "../../../lib/utils";
 
 export default function UserEvent({ event }) {
     return (

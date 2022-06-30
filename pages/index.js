@@ -3,7 +3,7 @@ import SEO from "../components/seo"
 import {api} from '../lib/api'
 import dynamic from "next/dynamic"
 
-const EventsTable = dynamic(() => import('../components/Views/eventsTable'), { ssr: false })
+const EventsTable = dynamic(() => import('../components/Views/Events/eventsTable'), { ssr: false })
 
 export async function getStaticProps(){
   const res = await fetch(`${api}/events`)

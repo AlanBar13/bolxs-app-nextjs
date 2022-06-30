@@ -4,7 +4,7 @@ import { api } from '../../../lib/api'
 import useSWR from 'swr'
 import Layout from "../../../components/Layouts/layout"
 import { useAuth } from '../../../context/AuthUserContext'
-import UserEvent from '../../../components/UserEvent'
+import UserEvent from '../../../components/Views/Users/UserEvent'
 import { Button, Text, Spinner, Flex, Grid } from '@chakra-ui/react'
 
 export default function Users() {

@@ -14,7 +14,7 @@ import {
     List,
     ListItem,
 } from '@chakra-ui/react';
-import { formatDate, formatPriceFixed } from '../lib/utils';
+import { formatDate, formatPriceFixed } from '../../../lib/utils';
   
   export default function ProductDetails({ event }) {
     return (

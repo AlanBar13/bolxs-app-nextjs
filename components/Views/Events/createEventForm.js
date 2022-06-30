@@ -28,11 +28,11 @@ import { AddIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup';
-import Dropzone from './fileDropzone';
-import CustomCalendar from './calendar';
-import { api } from '../lib/api';
-import { useAuth } from "../context/AuthUserContext";
-import { parsePrice, formatPrice } from '../lib/utils';
+import Dropzone from '../../fileDropzone';
+import CustomCalendar from '../../calendar';
+import { api } from '../../../lib/api';
+import { useAuth } from "../../../context/AuthUserContext";
+import { parsePrice, formatPrice } from '../../../lib/utils';
 
 export default function EventForm(){
     const [files, setFiles] = useState(null);

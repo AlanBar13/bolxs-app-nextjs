@@ -1,5 +1,5 @@
 import { Flex, Spacer } from '@chakra-ui/react'
-import EventCard from '../eventCard'
+import EventCard from './EventCard'
 
 const CardContainer = ({ event }) => {
     return (
