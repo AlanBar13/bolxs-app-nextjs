@@ -13,6 +13,7 @@ import {
     useColorModeValue,
     List,
     ListItem,
+    Tag
 } from '@chakra-ui/react';
 import { formatDate, formatPriceFixed } from '../../../lib/utils';
   
@@ -135,6 +136,21 @@ import { formatDate, formatPriceFixed } from '../../../lib/utils';
                         <Text>Evento gratuito</Text>
                     )}
                 </SimpleGrid>
+              </Box>
+              <Box>
+                <Text
+                    fontSize={{ base: '16px', lg: '18px' }}
+                    color={useColorModeValue('yellow.500', 'yellow.300')}
+                    fontWeight={'500'}
+                    textTransform={'uppercase'}
+                    mb={'4'}>
+                    Tags
+                </Text>
+                {event.tags ? (
+                    event.tags.map((tag, i) => (
+                        <Tag key={i} color="teal.500">{tag}</Tag>
+                    ))
+                ): (<Text>No hay tags</Text>)}
               </Box>
             </Stack>
   
