@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from "../context/AuthUserContext";
 import Layout from "../components/Layouts/layout"
 import Head from "next/head";
-import EventForm from "../components/createEventForm";
+import EventForm from "../components/Views/Events/createEventForm";
 
 
 export default function CreateEvent(){
