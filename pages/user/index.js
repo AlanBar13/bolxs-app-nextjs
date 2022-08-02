@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from "../../context/AuthUserContext";
 import Head from "next/head";
 import Layout from "../../components/Layouts/layout"
+import UserSideBar from "../../components/Layouts/usersLayout";
 
 export default function User() {
     const { authUser, isLoading} = useAuth();
@@ -16,8 +17,10 @@ export default function User() {
         <>
             <Head><title>Perfil</title></Head>
             <Layout>
-                <div>Users</div>
-                {authUser && JSON.stringify(authUser)}
+                <UserSideBar>
+                    <div>Users</div>
+                    {authUser && JSON.stringify(authUser)}
+                </UserSideBar>
             </Layout>
         </>
     )
