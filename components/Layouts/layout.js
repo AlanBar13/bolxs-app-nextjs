@@ -1,6 +1,7 @@
 import NLink from "next/link";
 import { useRouter } from 'next/router';
 import { useAuth } from "../../context/AuthUserContext";
+import {motion} from 'framer-motion'
 import {
     Box,
     Flex,
@@ -21,6 +22,12 @@ import {
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 
 const Links = [{name: 'Conciertos', route: '/concerts'}, {name: 'Eventos', route: '/events'}, {name: 'Deportes', route: '/sports'}];
+
+const variants = {
+	hidden: { opacity: 0, x: -200, y: 0 },
+    enter: { opacity: 1, x: 0, y: 0 },
+    exit: { opacity: 0, x: 200, y: 0 },
+}
 
 const NavLink = ({ children, route }) => (
     <Link
@@ -43,64 +50,65 @@ export default function Layout({ children }) {
     const router = useRouter();
     return (
         <>
+        <div className="avoid-overflowx">
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                <IconButton
-                    size={'md'}
-                    icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                    aria-label={'Open Menu'}
-                    display={{ md: 'none' }}
-                    onClick={isOpen ? onClose : onOpen}
-                />
-                <HStack spacing={8} alignItems={'center'}>
-                    <NavLink route='/'>Bolxs!!</NavLink>
-                    <HStack
-                    as={'nav'}
-                    spacing={4}
-                    display={{ base: 'none', md: 'flex' }}>
-                        {Links.map((link, i) => (
-                            <NavLink key={i} route={link.route}>{link.name}</NavLink>
-                        ))}
+                    <IconButton
+                        size={'md'}
+                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                        aria-label={'Open Menu'}
+                        display={{ md: 'none' }}
+                        onClick={isOpen ? onClose : onOpen}
+                    />
+                    <HStack spacing={8} alignItems={'center'}>
+                        <NavLink route='/'>Bolxs!!</NavLink>
+                        <HStack
+                        as={'nav'}
+                        spacing={4}
+                        display={{ base: 'none', md: 'flex' }}>
+                            {Links.map((link, i) => (
+                                <NavLink key={i} route={link.route}>{link.name}</NavLink>
+                            ))}
+                        </HStack>
                     </HStack>
-                </HStack>
-                <Flex alignItems={'center'}>
-                    <Button
-                    variant={'solid'}
-                    colorScheme={'teal'}
-                    size={'sm'}
-                    mr={4}
-                    onClick={() => router.push('/createEvent')}
-                    leftIcon={<AddIcon />}>
-                    Agregar Evento
-                    </Button>
-                    {authUser ? (
-                        <Menu>
-                            <MenuButton
-                                as={Button}
-                                rounded={'full'}
-                                variant={'link'}
-                                cursor={'pointer'}
-                                minW={0}>
-                                <Avatar
-                                size={'sm'}
-                                src={
-                                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                }
-                                />
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem onClick={() => router.push('/user')}>Perfil</MenuItem>
-                                <MenuItem>Link 2</MenuItem>
-                                <MenuDivider />
-                                <MenuItem onClick={signOut}>Salir</MenuItem>
-                            </MenuList>
-                        </Menu>
-                    ) :(
-                        <Link href='/login'>
-                            Acceder
-                        </Link>
-                    )}
-                </Flex>
+                    <Flex alignItems={'center'}>
+                        <Button
+                        variant={'solid'}
+                        colorScheme={'teal'}
+                        size={'sm'}
+                        mr={4}
+                        onClick={() => router.push('/createEvent')}
+                        leftIcon={<AddIcon />}>
+                        Agregar Evento
+                        </Button>
+                        {authUser ? (
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    rounded={'full'}
+                                    variant={'link'}
+                                    cursor={'pointer'}
+                                    minW={0}>
+                                    <Avatar
+                                    size={'sm'}
+                                    src={
+                                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                                    }
+                                    />
+                                </MenuButton>
+                                <MenuList>
+                                    <MenuItem onClick={() => router.push('/user')}>Perfil</MenuItem>
+                                    <MenuItem>Link 2</MenuItem>
+                                    <MenuDivider />
+                                    <MenuItem onClick={signOut}>Salir</MenuItem>
+                                </MenuList>
+                            </Menu>
+                        ) :(
+                            <Link href='/login'>
+                                Acceder
+                            </Link>
+                        )}
+                    </Flex>
                 </Flex>
 
                 {isOpen ? (
@@ -114,8 +122,21 @@ export default function Layout({ children }) {
                 </Box>
                 ) : null}
             </Box>
-
-            <Box>{children}</Box>
+            <motion.main
+                initial="hidden"
+                animate="enter"
+                exit="exit"
+                variants={variants}
+                transition={{ type: 'linear' }}
+            >
+                {children}
+            </motion.main>
+            <style jsx>{`
+                .avoid-overflowx {
+                    overflow-x: hidden;
+                }
+            `}</style>
+        </div>
         </>
     )
 }
