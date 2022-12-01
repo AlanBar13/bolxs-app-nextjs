@@ -16,7 +16,7 @@ export async function getStaticProps(){
   }
 }
 
-export const titlePage = "Bolxs!!";
+export const titlePage = "Bolxs!";
 export const descriptionPage = "Platoforma para la creacion y compra de tickets para eventos de todo tipo";
 
 export default function Home({events}) {
