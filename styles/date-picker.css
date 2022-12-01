@@ -5,6 +5,10 @@ html {
   scroll-behavior: smooth;
 }
 
+p,h1,h2,h3,h4,h5,h6 {
+  color: white;
+}
+
 .light-theme {
   --light-gray: var(--chakra-colors-gray-200);
   --gray: var(--chakra-colors-gray-300);
