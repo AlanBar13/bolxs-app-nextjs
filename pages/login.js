@@ -1,103 +1,118 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthUserContext';
-import {
-    Button,
-    Checkbox,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    Input,
-    Link,
-    Stack,
-    Image,
-    Text,
-    Spinner,
-} from '@chakra-ui/react';
-import Alerts from '../components/alert';
-import Head from 'next/head';
+import { Button, Flex, Image, useToast, Center } from '@chakra-ui/react';
+import { LoginContent } from '../components/Views/Login/LoginContent';
+import { CustomToast } from '../components/atomic/CustomToast';
+import { AnimatePresence } from 'framer-motion';
+import { SignupContent } from '../components/Views/Login/SignupContent';
+import SEO from '../components/seo';
+import Layout from '../components/Layouts/layout';
+
+// TODO: SAME AS COMPONENTS
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showAlert, setShowAlert] = useState({status: false, type: '', title: ''});
-    const {signInWithEmail, authUser, isLoading} = useAuth();
-    const router = useRouter();
-   
-    useEffect(() => {
-        if(authUser) {
-            router.back();
-        }
-    }, [authUser, router]);
+  const [isLoginForm, setIsLoginForm] = useState(true);
+  const toast = useToast();
+  const toastIdRef = useRef();
 
-    const login = async () => {
-        try {
-            setShowAlert({status: false, type: '', title: ''});
-            await signInWithEmail(email, password);
-        } catch (error) {
-            const errorCode = error.code;
-            switch(errorCode) {
-                case 'auth/user-not-found':
-                    setShowAlert({status: true, type: 'error', title: 'Usuario no encontrado'});
-                    break;
-                case 'auth/wrong-password':
-                    setShowAlert({status: true, type: 'error', title: 'Contraseña incorrecta'});
-                    break;
-                case 'auth/invalid-email':
-                    setShowAlert({status: true, type: 'error', title: 'Email incorrecto'});
-                    break;
-                default:
-                    setShowAlert({status: true, type: 'error', title: 'Revisar usuario y contraseña'});
-            }
-        }
+  const closeToast = () =>
+    toastIdRef.current && toast.close(toastIdRef.current);
+  const requestRes = (title, type, desc) => {
+    toastIdRef.current = toast({
+      position: 'top-right',
+      duration: 2500,
+      render: () => (
+        <CustomToast title={title} desc={desc} close={closeToast} type={type} />
+      ),
+    });
+  };
+  const { signInWithEmail, authUser, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (authUser) {
+      router.back();
     }
+  }, [authUser, router]);
 
-    return (
-        <>
-            <Head>
-                <title>Bolxs!! Login</title>
-            </Head>
-            <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
-                <Flex p={8} flex={1} align={'center'} justify={'center'}>
-                    <Stack spacing={4} w={'full'} maxW={'md'}>
-                        <Heading fontSize={'2xl'}>Accede a tu cuenta</Heading>
-                        <FormControl id="email">
-                            <FormLabel>Email</FormLabel>
-                            <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
-                        </FormControl>
-                        <FormControl id="password">
-                            <FormLabel>Contraseña</FormLabel>
-                            <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
-                        </FormControl>
-                        <Stack spacing={6}>
-                            <Stack
-                            direction={{ base: 'column', sm: 'row' }}
-                            align={'start'}
-                            justify={'space-between'}>
-                                <Checkbox>Recuerdame</Checkbox>
-                                <Link color={'blue.500'}>Olvidaste tu contraseña?</Link>
-                            </Stack>
-                            <Button colorScheme={'blue'} variant={'solid'} onClick={() => login()}>
-                                {isLoading ? <Spinner size={'sm'} /> : 'Iniciar sesión'}
-                            </Button>
-                            <Text align={'center'}>Crear una <Link color={'blue.500'} href='/signup'>cuenta</Link></Text>
-                            {showAlert.status && (
-                                <Alerts type={showAlert.type} title={showAlert.title} />
-                            )}
-                        </Stack>
-                    </Stack>
-                </Flex>
-                <Flex flex={1}>
-                    <Image
-                    alt={'Login Image'}
-                    objectFit={'cover'}
-                    src={
-                        'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'
-                    }
-                    />
-                </Flex>
-            </Stack>
-        </>
-    )
+  const login = async () => {
+    try {
+      //   await signInWithEmail(email, password);
+      requestRes('Usuario no encontrado', 'error');
+    } catch (error) {
+      const errorCode = error.code;
+      switch (errorCode) {
+        case 'auth/user-not-found':
+          requestRes('Usuario no encontrado', 'error');
+          break;
+        case 'auth/wrong-password':
+          requestRes('Contraseña incorrecta', 'error');
+          break;
+        case 'auth/invalid-email':
+          requestRes('Correo incorrecto', 'error');
+          break;
+        default:
+          requestRes('Revisa usuario y contraseña', 'warning');
+      }
+    }
+  };
+
+  return (
+    <>
+      <SEO
+        title='Bolxs!!'
+        description='Platoforma para la creacion y compra de tickets para eventos de todo tipo'
+      />
+      <Layout>
+        <Center
+          position='absolute'
+          top='0'
+          right='0'
+          bottom='0'
+          left='0'
+          bgImage='/seats.png'
+          bgRepeat='no-repeat'
+          bgSize='cover'>
+          <Flex
+            w='100%'
+            maxW='28rem'
+            minH='100vh'
+            px='1rem'
+            pt={{ base: '4.3rem', lg: '5.5rem' }}
+            pb='3.5rem'
+            flexDir='column'
+            gap='2.5rem'
+            alignItems='center'>
+            <Flex flexDir='column' alignItems='center' gap='1.5rem' w='100%'>
+              <Image src='/logo-bx.svg' />
+              <Flex w='100%' bg='inputBg' p='2px' gap='2px'>
+                <Button
+                  w='full'
+                  bg={isLoginForm ? 'transparent' : 'textMuted'}
+                  fontWeight='normal'
+                  onClick={() => setIsLoginForm(false)}>
+                  Registrarse
+                </Button>
+                <Button
+                  w='full'
+                  bg={isLoginForm ? 'textMuted' : 'transparent'}
+                  fontWeight='normal'
+                  onClick={() => setIsLoginForm(true)}>
+                  Login
+                </Button>
+              </Flex>
+            </Flex>
+            <AnimatePresence exitBeforeEnter>
+              {isLoginForm ? (
+                <LoginContent key={0} isLoading={isLoading} login={login} />
+              ) : (
+                <SignupContent key={1} isLoading={isLoading} login={login} />
+              )}
+            </AnimatePresence>
+          </Flex>
+        </Center>
+      </Layout>
+    </>
+  );
 }
