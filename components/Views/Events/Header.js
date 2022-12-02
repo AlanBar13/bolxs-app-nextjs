@@ -39,6 +39,7 @@ export const Header = () => {
         {/* TODO: MAKE INPUT WORKS */}
         <Input
           borderColor='transparent'
+          color='white'
           rounded='xl'
           type='text'
           bg='inputBg'

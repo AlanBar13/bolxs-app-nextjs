@@ -14,11 +14,11 @@ const schema = yup
     lastname: yup.string().required('Apellido(s) es requerido').min(3, ''),
     email: yup
       .string()
-      .email('Debe ser un email valido')
+      .email('Debe ser un correo valido')
       .required('Correo es requerido'),
     password1: yup
       .string()
-      .required('La contraseña es requerida')
+      .required('Contraseña es requerida')
       .min(6, 'Debe tener al menos 6 caracteres'),
     password2: yup
       .string()
@@ -98,6 +98,7 @@ export const SignupForm = ({ requestRes }) => {
           variant='unstyled'
           fontFamily='heading'
           bg='theme.200'
+          color='white'
           rounded='lg'
           fontSize='2xl'
           pt='0.6rem'

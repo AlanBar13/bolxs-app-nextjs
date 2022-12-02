@@ -106,10 +106,11 @@ export const GenresFilter = () => {
         {filters.map((filter, i) => (
           <motion.span
             key={i}
-            style={{ flexShrink: 0 }}
+            style={{ flexShrink: 0, cursor: 'pointer' }}
             onClick={() => setActiveFilter(filter)}
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}>
+            whileTap={{ scale: 0.95 }}
+            transition={{duration: 0.1}}>
             <Image
               src={`/generesImg/${filter}.svg`}
               alt='all-genre'

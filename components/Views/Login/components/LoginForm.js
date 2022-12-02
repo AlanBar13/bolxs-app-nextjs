@@ -10,11 +10,11 @@ const schema = yup
   .object({
     email: yup
       .string()
-      .email('Debe ser un email valido')
+      .email('Debe ser un correo valido')
       .required('Correo es requerido'),
     password: yup
       .string()
-      .required('La contraseña es requerida')
+      .required('Contraseña es requerida')
       .min(6, 'Debe tener al menos 6 caracteres'),
   })
   .required();
@@ -87,6 +87,7 @@ export const LoginForm = ({ requestRes }) => {
             variant='unstyled'
             fontFamily='heading'
             bg='theme.200'
+            color='white'
             rounded='lg'
             fontSize='2xl'
             pt='0.6rem'
@@ -99,6 +100,7 @@ export const LoginForm = ({ requestRes }) => {
         <Flex gap='0.7rem' alignItems='center'>
           <Checkbox
             colorScheme='primary'
+            color='white'
             onChange={() => setWantToRemember(!wantToRemember)}>
             Recordarme en este navegador
           </Checkbox>

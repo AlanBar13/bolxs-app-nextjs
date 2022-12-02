@@ -7,7 +7,7 @@ import { CustomToast } from '../components/atomic/CustomToast';
 import { AnimatePresence } from 'framer-motion';
 import { SignupContent } from '../components/Views/Login/SignupContent';
 import SEO from '../components/seo';
-import Layout from '../components/Layouts/layout';
+import Layout from '../components/Layouts/layoutAuth';
 
 export default function Login() {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -41,22 +41,14 @@ export default function Login() {
         description='Platoforma para la creacion y compra de tickets para eventos de todo tipo'
       />
       <Layout>
-        <Center
-          position='absolute'
-          top='0'
-          right='0'
-          bottom='0'
-          left='0'
-          bgImage='/seats.png'
-          bgRepeat='no-repeat'
-          bgSize='cover'>
+        <Center bgImage='/seats.png' bgRepeat='no-repeat' bgSize='cover'>
           <Flex
             w='100%'
             maxW='28rem'
             minH='100vh'
             px='1rem'
             pt={{ base: '4.3rem', lg: '5.5rem' }}
-            pb='3.5rem'
+            pb='8rem'
             flexDir='column'
             gap='2.5rem'
             alignItems='center'>
@@ -66,6 +58,7 @@ export default function Login() {
                 <Button
                   w='full'
                   bg={isLoginForm ? 'transparent' : 'textMuted'}
+                  color='textSecondary'
                   fontWeight='normal'
                   onClick={() => setIsLoginForm(false)}>
                   Registrarse
@@ -73,6 +66,7 @@ export default function Login() {
                 <Button
                   w='full'
                   bg={isLoginForm ? 'textMuted' : 'transparent'}
+                  color='textSecondary'
                   fontWeight='normal'
                   onClick={() => setIsLoginForm(true)}>
                   Login
