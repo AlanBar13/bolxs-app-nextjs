@@ -8,8 +8,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { SearchIcon } from '../../../assets';
+import { useAuth } from '../../../context/AuthUserContext';
 
 export const Header = () => {
+  const { authUser } = useAuth();
   return (
     <Flex
       flexDir={{ base: 'column', md: 'row' }}
@@ -17,13 +19,15 @@ export const Header = () => {
       alignItems={{ md: 'center' }}
       justifyContent='space-between'>
       <Flex alignItems='center' gap='0.55rem'>
-        <Avatar name='' bg='primary.500' src='https://bit.ly/dan-abramov' />
+        {/* TODO: BRING MORE INFO ABOUT THE USER */}
+        <Avatar name={authUser ? authUser.email : 'b'} bg='primary.500' />
+        {/* <Avatar name='' bg='primary.500' src='https://bit.ly/dan-abramov' /> */}
         <Flex flexDir='column'>
           <Text color='textSecondary' fontSize='13px' lineHeight='18px'>
             Bienvenido,
           </Text>
           <Text fontWeight='bold' fontSize='22px' lineHeight='25px'>
-            Amante de eventos
+            {authUser ? authUser.email : 'Amante de eventos'}
           </Text>
         </Flex>
       </Flex>
@@ -32,9 +36,10 @@ export const Header = () => {
           pointerEvents='none'
           children={<SearchIcon color='textMuted' size='1.2rem' />}
         />
-		{/* TODO: MAKE INPUT WORKS */}
+        {/* TODO: MAKE INPUT WORKS */}
         <Input
           borderColor='transparent'
+          color='white'
           rounded='xl'
           type='text'
           bg='inputBg'

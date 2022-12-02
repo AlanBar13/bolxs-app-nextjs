@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthUserContext';
-import { Button, Flex, Image, useToast, Center } from '@chakra-ui/react';
+import { Button, Flex, Image, useToast, Center, Box } from '@chakra-ui/react';
 import { LoginContent } from '../components/Views/Login/LoginContent';
 import { CustomToast } from '../components/atomic/CustomToast';
 import { AnimatePresence } from 'framer-motion';
 import { SignupContent } from '../components/Views/Login/SignupContent';
 import SEO from '../components/seo';
-import Layout from '../components/Layouts/layout';
-
-// TODO: SAME AS COMPONENTS
+import Layout from '../components/Layouts/layoutAuth';
 
 export default function Login() {
   const [isLoginForm, setIsLoginForm] = useState(true);
@@ -27,36 +25,14 @@ export default function Login() {
       ),
     });
   };
-  const { signInWithEmail, authUser, isLoading } = useAuth();
+  const { authUser } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (authUser) {
-      router.back();
+      router.push('/user');
     }
   }, [authUser, router]);
-
-  const login = async () => {
-    try {
-      //   await signInWithEmail(email, password);
-      requestRes('Usuario no encontrado', 'error');
-    } catch (error) {
-      const errorCode = error.code;
-      switch (errorCode) {
-        case 'auth/user-not-found':
-          requestRes('Usuario no encontrado', 'error');
-          break;
-        case 'auth/wrong-password':
-          requestRes('Contraseña incorrecta', 'error');
-          break;
-        case 'auth/invalid-email':
-          requestRes('Correo incorrecto', 'error');
-          break;
-        default:
-          requestRes('Revisa usuario y contraseña', 'warning');
-      }
-    }
-  };
 
   return (
     <>
@@ -65,22 +41,14 @@ export default function Login() {
         description='Platoforma para la creacion y compra de tickets para eventos de todo tipo'
       />
       <Layout>
-        <Center
-          position='absolute'
-          top='0'
-          right='0'
-          bottom='0'
-          left='0'
-          bgImage='/seats.png'
-          bgRepeat='no-repeat'
-          bgSize='cover'>
+        <Center bgImage='/seats.png' bgRepeat='no-repeat' bgSize='cover'>
           <Flex
             w='100%'
             maxW='28rem'
             minH='100vh'
             px='1rem'
             pt={{ base: '4.3rem', lg: '5.5rem' }}
-            pb='3.5rem'
+            pb='8rem'
             flexDir='column'
             gap='2.5rem'
             alignItems='center'>
@@ -90,6 +58,7 @@ export default function Login() {
                 <Button
                   w='full'
                   bg={isLoginForm ? 'transparent' : 'textMuted'}
+                  color='textSecondary'
                   fontWeight='normal'
                   onClick={() => setIsLoginForm(false)}>
                   Registrarse
@@ -97,6 +66,7 @@ export default function Login() {
                 <Button
                   w='full'
                   bg={isLoginForm ? 'textMuted' : 'transparent'}
+                  color='textSecondary'
                   fontWeight='normal'
                   onClick={() => setIsLoginForm(true)}>
                   Login
@@ -105,9 +75,9 @@ export default function Login() {
             </Flex>
             <AnimatePresence exitBeforeEnter>
               {isLoginForm ? (
-                <LoginContent key={0} isLoading={isLoading} login={login} />
+                <LoginContent key={0} requestRes={requestRes} />
               ) : (
-                <SignupContent key={1} isLoading={isLoading} login={login} />
+                <SignupContent key={1} requestRes={requestRes} />
               )}
             </AnimatePresence>
           </Flex>
