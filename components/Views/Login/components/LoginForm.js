@@ -86,12 +86,14 @@ export const LoginForm = ({ requestRes }) => {
             type='submit'
             variant='unstyled'
             fontFamily='heading'
-            bg='theme.200'
             color='white'
             rounded='lg'
             fontSize='2xl'
             pt='0.6rem'
-            pb='0.3rem'>
+            pb='0.3rem'
+            bg='theme.200'
+            _hover={{ filter: 'brightness(1.2)' }}
+            _active={{ filter: 'brightness(0.9)' }}>
             {isLoading ? <Spinner color='primary.400' /> : 'Login'}
           </Button>
         </FastReactiveForm>

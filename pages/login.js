@@ -60,6 +60,8 @@ export default function Login() {
                   bg={isLoginForm ? 'transparent' : 'textMuted'}
                   color='textSecondary'
                   fontWeight='normal'
+                  _hover={{ filter: 'brightness(1.2)' }}
+                  _active={{ filter: 'brightness(0.9)' }}
                   onClick={() => setIsLoginForm(false)}>
                   Registrarse
                 </Button>
@@ -68,6 +70,8 @@ export default function Login() {
                   bg={isLoginForm ? 'textMuted' : 'transparent'}
                   color='textSecondary'
                   fontWeight='normal'
+                  _hover={{ filter: 'brightness(1.2)' }}
+                  _active={{ filter: 'brightness(0.9)' }}
                   onClick={() => setIsLoginForm(true)}>
                   Login
                 </Button>

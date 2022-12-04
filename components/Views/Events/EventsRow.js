@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ChevronLeft, ChevronRight } from '../../../assets';
 import { formatDate, formatPriceFixed } from '../../../lib/utils';
+import { useRouter } from 'next/router';
 
 // TODO: REFACTOR INTO SMALL COMPONENTS
 
@@ -24,6 +25,7 @@ const FallbackRectangle = () => (
 );
 
 export const EventsRow = ({ events, label }) => {
+  const router = useRouter()
   const containerRef = useRef();
 
   const scrollRight = () => {
@@ -46,6 +48,9 @@ export const EventsRow = ({ events, label }) => {
       // containerRef.current.scrollLeft -= 203.2;
     }
   };
+  const seeEventDetails = (eventId) => {
+    router.push(`/events/${eventId}`)
+  }
   return (
     <Flex position='relative' flexDir='column'>
       <Text color='textSecondary' fontStyle='oblique' fontSize='xl'>
@@ -106,7 +111,8 @@ export const EventsRow = ({ events, label }) => {
             key={e._id}
             style={{ flexShrink: 0, overflow: 'visible', cursor: 'pointer' }}
             whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}>
+            whileTap={{ scale: 0.95 }}
+            onClick={() => seeEventDetails(e._id)}>
             <Image
               src={`${e.banner}`}
               alt='event-banner'

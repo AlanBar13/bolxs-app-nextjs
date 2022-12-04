@@ -15,7 +15,7 @@ export default function Layout({ children }) {
         display: 'flex',
         flexDirection: 'column',
         gap: '1.2rem',
-        marginBottom: '8rem'
+        marginBottom: '4rem'
       }}>
       {children}
     </motion.main>
