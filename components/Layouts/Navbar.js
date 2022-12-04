@@ -15,7 +15,7 @@ export const Navbar = () => {
   ];
   return (
     <motion.nav
-      style={{ position: 'fixed', zIndex: 99, bottom: '1.5rem' }}
+      style={{ position: 'fixed', zIndex: 90, bottom: '1.5rem' }}
       initial={{ y: '6rem' }}
       animate={{ y: '0rem' }}
       transition={{ type: 'tween', duration: 0.3, delay: 1.5 }}>
