@@ -25,6 +25,25 @@ input {
   );
 }
 
+.file-input-label {
+  cursor: pointer;
+  text-align: center;
+  border: 3px dashed #8507d9;
+  padding-block: 3rem;
+}
+
+.file-input-label:hover {
+  background-color: rgba(133, 7, 217, 0.2);
+}
+
+.has-file {
+  padding-block: 0.5rem;
+  padding-inline: 0.5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .light-theme {
   --light-gray: var(--chakra-colors-gray-200);
   --gray: var(--chakra-colors-gray-300);

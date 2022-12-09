@@ -8,13 +8,18 @@ export const FastReactiveForm = ({
   children,
   schema,
   onSubmit,
+  needReset,
 }) => {
-  const { handleSubmit, register, control } = useForm({
+  const { handleSubmit, register, control, reset } = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
+  const localSubmit = data => {
+    onSubmit(data);
+    needReset && reset();
+  };
   return (
-    <Flex as='form' w='100%' onSubmit={handleSubmit(onSubmit)}>
+    <Flex as='form' w='100%' onSubmit={handleSubmit(localSubmit)}>
       <Flex flexDir='column' alignItems='center' gap='1.5rem' w='100%'>
         {React.Children.map(children, child => {
           return child.props.name
