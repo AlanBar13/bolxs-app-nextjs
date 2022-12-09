@@ -67,7 +67,7 @@ const Event = ({ data }) => {
     start_sell: data.start_sell || '',
     tags: data.tags || [''],
     ticket_selled: data.ticket_selled || 0,
-    ticket_type: data.ticket_type || [
+    ticket_types: data.ticket_types || [
       {
         amount: data.amount || 0,
         available: data.available || 0,
@@ -103,7 +103,7 @@ const Event = ({ data }) => {
 
             <Flex flexDir='column' gap='1rem'>
               <Heading fontSize='clamp(3rem, 8vw, 4rem)'>entradas</Heading>
-              {eventData.ticket_type.map(ticket => (
+              {eventData.ticket_types.map(ticket => (
                 <Ticket
                   key={ticket._id}
                   start_date={eventData.start_date}

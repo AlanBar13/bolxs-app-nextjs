@@ -133,7 +133,7 @@ export const EventsRow = ({ events, label }) => {
               <Flex justifyContent='space-between' alignItems='center'>
                 <Text fontStyle='oblique' color='textSecondary' fontSize='sm'>
                   {formatPriceFixed(
-                    Math.min(...e.ticket_type.map(ticket => ticket.price))
+                    Math.min(...e.ticket_types.map(ticket => ticket.price))
                   )}
                 </Text>
                 <Badge
