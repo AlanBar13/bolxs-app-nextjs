@@ -40,10 +40,10 @@ export default function CreateEvent() {
 
   const uploadBanner = async () => {
     const formData = new FormData();
-    formData.append('file', eventFormData.poster);
+    formData.append('banner', eventFormData.poster);
     const res = await fetch(`${api}/utils/upload`, {
       method: 'POST',
-      body: { banner: formData },
+      body: formData
     })
       .then(response => {
         if (response.status >= 400 && response.status < 600) {
@@ -54,6 +54,7 @@ export default function CreateEvent() {
       })
       .then(data => {
         console.log(data);
+        setBanneUrl(data.url)
       });
     // const data = await res.json();
     // setBanneUrl(data.url);
@@ -61,7 +62,7 @@ export default function CreateEvent() {
 
   const createEvent = async () => {
     const ticket_types = [];
-    const maximun_tickets = eventFormData.ticketData.tickets.reduce(
+    const maximum_tickets = eventFormData.ticketData.tickets.reduce(
       (add, value) => add + Number(value.ticketQuantity),
       0
     );
@@ -84,7 +85,7 @@ export default function CreateEvent() {
         lat: 1,
         name: eventFormData.placeName,
       },
-      maximun_tickets,
+      maximum_tickets,
       name: eventFormData.name,
       private: eventFormData.isPrivate,
       start_date: eventFormData.initDate,
