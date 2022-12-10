@@ -9,7 +9,6 @@ import { TicketForm } from '../components/Views/Events/createEvent/TicketForm';
 import { PosterForm } from '../components/Views/Events/createEvent/PosterForm';
 import { FinishedDialog } from '../components/Views/Events/createEvent/FinishedDialog';
 import { api } from '../lib/api';
-import { async } from '@firebase/util';
 
 export default function CreateEvent() {
   const router = useRouter();
@@ -25,7 +24,6 @@ export default function CreateEvent() {
 
   const closeAlert = () => setAlertDisplayed(false);
 
-  // TODO: METHOD TO UPLOAD DATA
   const sendInfo = async () => {
     setAlertDisplayed(false);
     setIsSendingData(true);
@@ -33,8 +31,6 @@ export default function CreateEvent() {
     await uploadBanner();
     await createEvent();
 
-    console.log('>>> Forms data');
-    console.log(eventFormData);
     setIsSendingData(false);
   };
 
@@ -43,7 +39,7 @@ export default function CreateEvent() {
     formData.append('banner', eventFormData.poster);
     const res = await fetch(`${api}/utils/upload`, {
       method: 'POST',
-      body: formData
+      body: formData,
     })
       .then(response => {
         if (response.status >= 400 && response.status < 600) {
@@ -53,11 +49,8 @@ export default function CreateEvent() {
         return response.json();
       })
       .then(data => {
-        console.log(data);
-        setBanneUrl(data.url)
+        setBanneUrl(data.url);
       });
-    // const data = await res.json();
-    // setBanneUrl(data.url);
   };
 
   const createEvent = async () => {
@@ -110,9 +103,7 @@ export default function CreateEvent() {
         }
         return response.json();
       })
-      .then(data => {
-        console.log(data);
-      });
+      .then(data => router.push('/'));
   };
 
   const formsContainerScroll = (toRight, times = 1) => {

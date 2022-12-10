@@ -11,16 +11,24 @@ export const FileInput = ({
   ...rest
 }) => {
   const { field, fieldState } = useController({ name, control });
-  const [fileName, setFileName] = useState('')
+  const [fileName, setFileName] = useState('');
   const localOnChange = e => {
+    if (e.target.files[0].size < 2000000) field.onChange(e);
     onChange(e);
-    field.onChange(e);
-    setFileName(e.target.files[0].name)
+    setFileName(e.target.files[0].name);
   };
   return (
     <Flex flexDir='column' w='100%' gap='0.3rem'>
-      <label className={`file-input-label ${fileName !== '' && 'has-file'}`}>
-        {fileName !== '' ? fileName : 'Da click y selecciona una imagen'}
+      <label
+        className={`file-input-label ${fileName !== '' && 'has-file'}`}
+        style={{ borderColor: fieldState.error ? '#f43f5e' : '#8507d9' }}>
+        <Text color={fieldState.error ? '#f43f5e' : 'white'} ml='0.3rem'>
+          {fieldState.error
+            ? fieldState.error.message
+            : fileName !== ''
+            ? fileName
+            : 'Da click y selecciona una imagen'}
+        </Text>
         <Input
           {...rest}
           {...register(name)}
@@ -28,6 +36,7 @@ export const FileInput = ({
           borderColor='transparent'
           rounded='xl'
           type='file'
+          accept='image/png, image/jpg, image/jpeg, image/tiff, image/webp, image/psd'
           bg='inputBg'
           color='white'
           focusBorderColor='primary.500'
@@ -40,11 +49,6 @@ export const FileInput = ({
           onBlur={field.onBlur}
         />
       </label>
-      {fieldState.error && (
-        <Text color='#f43f5e' ml='0.3rem'>
-          {fieldState.error.message}
-        </Text>
-      )}
     </Flex>
   );
 };

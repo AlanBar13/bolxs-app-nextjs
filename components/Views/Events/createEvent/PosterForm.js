@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import * as yup from 'yup';
-import { Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { FastReactiveForm } from '../../../atomic/FastReactiveForm';
 import { FileInput } from '../../../atomic/FileInput';
 
-const schema = yup
-  .object({
-    poster: yup.string().required('Poster es requerido'),
-  })
-  .required();
+const schema = yup.object().shape({
+  poster: yup.mixed().test({
+    message: 'Debe seleccionar algún archivo menor o igual a 2Mb',
+    test: file => {
+      return typeof file === 'string';
+    },
+  }),
+});
 
 export const PosterForm = ({ onSubmit }) => {
   const [image, setImage] = useState('');
@@ -30,7 +33,10 @@ export const PosterForm = ({ onSubmit }) => {
       </Heading>
       <Text color='textSecondary' fontStyle='italic'>
         Recomendamos ampleamente que el cartel tenga un Aspect Ratio de 2/3 para
-        una mejor visualización dentro de la plataforma
+        una mejor visualización dentro de la plataforma.
+      </Text>
+      <Text color='textSecondary' fontStyle='italic'>
+        Además no debe de pesar más de 2Mb
       </Text>
       {image !== '' && (
         <Flex w='100%' justifyContent='center'>

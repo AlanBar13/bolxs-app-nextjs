@@ -2,12 +2,8 @@ import React from 'react';
 import Layout from '../../components/Layouts/layout';
 import { api } from '../../lib/api';
 import {
-  Box,
-  Center,
   Flex,
   Heading,
-  IconButton,
-  Text,
   useMediaQuery,
 } from '@chakra-ui/react';
 import { LargeEntranceAnimation } from '../../components/Views/Events/singleEvent/LargeEntranceAnimation';
@@ -24,17 +20,22 @@ export async function getStaticPaths() {
       fallback: 'blocking',
     };
   }
-  const res = await fetch(`${api}/events`);
-  const events = await res.json();
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+  // const res = await fetch(`${api}/events`);
+  // const events = await res.json();
 
-  const paths = events.map(event => ({
-    params: { id: event._id },
-  }));
-  return { paths, fallback: false };
+  // const paths = events.map(event => ({
+  //   params: { id: event.longUrl },
+  // }));
+  // return { paths, fallback: false };
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch(`${api}/events/${context.params.id}`);
+  const id = context.params.id.split('$$');
+  const res = await fetch(`${api}/events/${id[1]}`);
   const data = await res.json();
   return {
     props: { data: data },
