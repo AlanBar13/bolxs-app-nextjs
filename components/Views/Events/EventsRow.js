@@ -25,7 +25,7 @@ const FallbackRectangle = () => (
 );
 
 export const EventsRow = ({ events, label }) => {
-  const router = useRouter()
+  const router = useRouter();
   const containerRef = useRef();
 
   const scrollRight = () => {
@@ -48,9 +48,9 @@ export const EventsRow = ({ events, label }) => {
       // containerRef.current.scrollLeft -= 203.2;
     }
   };
-  const seeEventDetails = (eventId) => {
-    router.push(`/events/${eventId}`)
-  }
+  const seeEventDetails = longUrl => {
+    router.push(`/events/${longUrl}`);
+  };
   return (
     <Flex position='relative' flexDir='column'>
       <Text color='textSecondary' fontStyle='oblique' fontSize='xl'>
@@ -112,7 +112,7 @@ export const EventsRow = ({ events, label }) => {
             style={{ flexShrink: 0, overflow: 'visible', cursor: 'pointer' }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => seeEventDetails(e._id)}>
+            onClick={() => seeEventDetails(e.longUrl)}>
             <Image
               src={`${e.banner}`}
               alt='event-banner'
@@ -133,7 +133,7 @@ export const EventsRow = ({ events, label }) => {
               <Flex justifyContent='space-between' alignItems='center'>
                 <Text fontStyle='oblique' color='textSecondary' fontSize='sm'>
                   {formatPriceFixed(
-                    Math.min(...e.ticket_type.map(ticket => ticket.price))
+                    Math.min(...e.ticket_types.map(ticket => ticket.price))
                   )}
                 </Text>
                 <Badge
@@ -143,35 +143,6 @@ export const EventsRow = ({ events, label }) => {
             </Flex>
           </motion.div>
         ))}
-        <motion.div
-          style={{ flexShrink: 0, overflow: 'visible', cursor: 'pointer' }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}>
-          <Image
-            src={`nop`}
-            alt='event-banner'
-            rounded='0.2rem'
-            fallback={<FallbackRectangle />}
-            objectFit='cover'
-            w='192px'
-            h='288px'
-            transition='ease-out'
-            transitionDuration='300ms'
-            style={{ aspectRatio: 2 / 3 }}
-          />
-          <Flex flexDir='column' pt='1'>
-            <Text fontStyle='oblique'>name</Text>
-            <Text fontStyle='oblique' color='textSecondary' fontSize='sm'>
-              0/0/0
-            </Text>
-            <Flex justifyContent='space-between' alignItems='center'>
-              <Text fontStyle='oblique' color='textSecondary' fontSize='sm'>
-                $ 0.00
-              </Text>
-              <Badge colorScheme='primary' variant='solid'>{`+0 hype`}</Badge>
-            </Flex>
-          </Flex>
-        </motion.div>
       </Flex>
     </Flex>
   );

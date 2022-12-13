@@ -8,20 +8,6 @@ import { ChevronLeft, ChevronRight } from '../../../assets';
 const filters = [
   'all',
   'heavy',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
-  'nop',
 ];
 
 const FallbackRectangle = () => (

@@ -2,12 +2,8 @@ import React from 'react';
 import Layout from '../../components/Layouts/layout';
 import { api } from '../../lib/api';
 import {
-  Box,
-  Center,
   Flex,
   Heading,
-  IconButton,
-  Text,
   useMediaQuery,
 } from '@chakra-ui/react';
 import { LargeEntranceAnimation } from '../../components/Views/Events/singleEvent/LargeEntranceAnimation';
@@ -24,17 +20,22 @@ export async function getStaticPaths() {
       fallback: 'blocking',
     };
   }
-  const res = await fetch(`${api}/events`);
-  const events = await res.json();
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+  // const res = await fetch(`${api}/events`);
+  // const events = await res.json();
 
-  const paths = events.map(event => ({
-    params: { id: event._id },
-  }));
-  return { paths, fallback: false };
+  // const paths = events.map(event => ({
+  //   params: { id: event.longUrl },
+  // }));
+  // return { paths, fallback: false };
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch(`${api}/events/${context.params.id}`);
+  const id = context.params.id.split('$$');
+  const res = await fetch(`${api}/events/${id[1]}`);
   const data = await res.json();
   return {
     props: { data: data },
@@ -67,7 +68,7 @@ const Event = ({ data }) => {
     start_sell: data.start_sell || '',
     tags: data.tags || [''],
     ticket_selled: data.ticket_selled || 0,
-    ticket_type: data.ticket_type || [
+    ticket_types: data.ticket_types || [
       {
         amount: data.amount || 0,
         available: data.available || 0,
@@ -103,7 +104,7 @@ const Event = ({ data }) => {
 
             <Flex flexDir='column' gap='1rem'>
               <Heading fontSize='clamp(3rem, 8vw, 4rem)'>entradas</Heading>
-              {eventData.ticket_type.map(ticket => (
+              {eventData.ticket_types.map(ticket => (
                 <Ticket
                   key={ticket._id}
                   start_date={eventData.start_date}

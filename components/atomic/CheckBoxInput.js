@@ -1,39 +1,31 @@
 import React from 'react';
-import { Flex, Input, Text } from '@chakra-ui/react';
+import { Checkbox, Flex, Text } from '@chakra-ui/react';
 import { useController } from 'react-hook-form';
 
-export const GeneralInput = ({
-  type,
+export const CheckBoxInput = ({
   placeholder,
   register,
   control,
   name,
-  hasLabel,
   ...rest
 }) => {
   const { field, fieldState } = useController({ name, control });
   return (
     <Flex flexDir='column' w='100%' gap='0.3rem'>
-      {hasLabel && <Text>{placeholder}</Text>}
-      <Input
+      <Checkbox
         {...rest}
         {...register(name)}
-        borderColor='transparent'
-        rounded='xl'
-        // type='datetime-local'
-        type={type}
-        bg='inputBg'
-        color='white'
-        placeholder={placeholder}
+        colorScheme='primary'
+        borderColor='primary.500'
         focusBorderColor='primary.500'
-        _placeholder={{ color: 'textMuted' }}
         _hover={{ borderColor: 'primary.600' }}
         _invalid={{ borderColor: '#f43f5e' }}
         isInvalid={!!fieldState.error}
-        autoComplete='off'
-        onChange={field.onChange}
+        onChangeCapture={field.onChange}
         onBlur={field.onBlur}
-      />
+      >
+        {placeholder}
+      </Checkbox>
       {fieldState.error && (
         <Text color='#f43f5e' ml='0.3rem'>
           {fieldState.error.message}

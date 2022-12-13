@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { formatDateSpanish } from '../../../../lib/utils';
 
+// TODO: SHOW PLACE OF THE EVENT
+
 export const MainSection = ({ eventName, status, desc, startDate }) => {
   return (
     <Flex flexDir='column' gap='1rem'>
@@ -23,7 +25,7 @@ export const MainSection = ({ eventName, status, desc, startDate }) => {
           </Text>
         </Box>
       </Flex>
-      <Flex flexDir='column'>
+      {/* <Flex flexDir='column'>
         <Text
           fontSize='calc(1rem, 8vw, 1.25rem)'
           color='white'
@@ -33,7 +35,7 @@ export const MainSection = ({ eventName, status, desc, startDate }) => {
         <Text fontSize='calc(1rem, 8vw, 1.25rem)' color='textSecondary'>
           Queretaro, Queretaro
         </Text>
-      </Flex>
+      </Flex> */}
       <Flex flexDir='column' mt='1rem'>
         <Text fontSize='calc(1rem, 8vw, 1.25rem)' color='textSecondary'>
           {desc}

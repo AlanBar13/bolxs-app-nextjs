@@ -1,8 +1,8 @@
 import React from 'react';
-import { Flex, Input, Text } from '@chakra-ui/react';
+import { Flex, Input, Text, Textarea } from '@chakra-ui/react';
 import { useController } from 'react-hook-form';
 
-export const GeneralInput = ({
+export const GeneralTextArea = ({
   type,
   placeholder,
   register,
@@ -15,12 +15,11 @@ export const GeneralInput = ({
   return (
     <Flex flexDir='column' w='100%' gap='0.3rem'>
       {hasLabel && <Text>{placeholder}</Text>}
-      <Input
+      <Textarea
         {...rest}
         {...register(name)}
         borderColor='transparent'
         rounded='xl'
-        // type='datetime-local'
         type={type}
         bg='inputBg'
         color='white'
@@ -30,7 +29,7 @@ export const GeneralInput = ({
         _hover={{ borderColor: 'primary.600' }}
         _invalid={{ borderColor: '#f43f5e' }}
         isInvalid={!!fieldState.error}
-        autoComplete='off'
+        resize='vertical'
         onChange={field.onChange}
         onBlur={field.onBlur}
       />
