@@ -12,7 +12,7 @@ import { api } from '../lib/api';
 
 export default function CreateEvent() {
   const router = useRouter();
-  const { authUser, isLoading } = useAuth();
+  const { authUser, isLoading, signOut } = useAuth();
 
   const formsContainer = useRef();
   const [eventFormData, setEventFormData] = useState({});
@@ -39,18 +39,22 @@ export default function CreateEvent() {
     formData.append('banner', eventFormData.poster);
     const res = await fetch(`${api}/utils/upload`, {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authUser.token}`, 
+      },
       body: formData,
-    })
-      .then(response => {
-        if (response.status >= 400 && response.status < 600) {
-          console.log('>>> error while updating image');
-          console.log('Bad response from server');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setBanneUrl(data.url);
-      });
+    });
+
+    const data = await res.json();
+    console.log('test', data)
+    if (data.code === 401){
+      console.log('redirect to login')
+      signOut()
+      router.push('/login')
+      return;
+    }
+    
+    setBanneUrl(data.url);
   };
 
   const createEvent = async () => {
@@ -88,7 +92,7 @@ export default function CreateEvent() {
     };
     console.log('>>> Request Obj');
     console.log(eventObj);
-    const res = await fetch(`${api}/events`, {
+    await fetch(`${api}/events`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
