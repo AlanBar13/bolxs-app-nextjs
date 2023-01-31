@@ -30,10 +30,11 @@ export default function Home({ events }) {
     <>
       <SEO title={titlePage} description={descriptionPage} />
       <Layout>
-        <Header />
+        <Header allEventsData={events} />
         <GenresFilter />
         <DynamicEventRow events={events} label='Popular' />
       </Layout>
     </>
   );
 }
+
