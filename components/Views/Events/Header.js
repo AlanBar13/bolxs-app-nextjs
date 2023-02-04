@@ -51,14 +51,14 @@ export const Header = ({ allEventsData }) => {
       justifyContent='space-between'>
       <Flex alignItems='center' gap='0.55rem'>
         {/* TODO: BRING MORE INFO ABOUT THE USER */}
-        <Avatar name={authUser ? authUser.email : 'b'} bg='primary.500' />
+        <Avatar name={authUser ? authUser.email : 'R'} bg='primary.500' />
         {/* <Avatar name='' bg='primary.500' src='https://bit.ly/dan-abramov' /> */}
         <Flex flexDir='column'>
           <Text color='textSecondary' fontSize='13px' lineHeight='18px'>
             Bienvenido,
           </Text>
           <Text fontWeight='bold' fontSize='22px' lineHeight='25px'>
-            {authUser ? authUser.email : 'Amante de eventos'}
+            {authUser ? authUser.email : 'Rockstar'}
           </Text>
         </Flex>
       </Flex>
