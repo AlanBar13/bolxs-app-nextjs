@@ -30,7 +30,7 @@ export default function Login() {
 
   useEffect(() => {
     if (authUser) {
-      router.push('/user');
+      router.push('/');
     }
   }, [authUser, router]);
 

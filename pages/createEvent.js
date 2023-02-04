@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import nookies from 'nookies'
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthUserContext';
 import Layout from '../components/Layouts/layout';
@@ -10,7 +11,35 @@ import { PosterForm } from '../components/Views/Events/createEvent/PosterForm';
 import { FinishedDialog } from '../components/Views/Events/createEvent/FinishedDialog';
 import { api } from '../lib/api';
 
-export default function CreateEvent() {
+export const getServerSideProps = async (ctx) => {
+  try {
+    const cookies = nookies.get(ctx);
+    const token = cookies.token;
+    
+    if (token === ''){
+      ctx.res.writeHead(302, { Location: '/login' });
+      ctx.res.end();
+      return { props: {} };
+    }
+
+    const res = await fetch(`${api}/users`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    });
+      
+    const userData = await res.json();
+    return { props: { data: userData }}
+  } catch (error) {
+    ctx.res.writeHead(302, { Location: '/login' });
+    ctx.res.end();
+    return { props: {} };
+  }
+}
+
+export default function CreateEvent({ data }) {
   const router = useRouter();
   const { authUser, isLoading, signOut } = useAuth();
 
